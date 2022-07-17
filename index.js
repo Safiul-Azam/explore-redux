@@ -1,94 +1,83 @@
+const { createStore } = require("redux")
+
 /**
  * state - count:0
  * action - decrement or increment or reset
  * reducer - handle logic operation
  * store - getState(), subscribe(), dispatch()
  */
-const { createStore } = require('redux')
-
-// define constructor
-const INCREMENT = 'INCREMENT'
-const DECREMENT = 'DECREMENT'
-const INCREMENT_COUNTER_VALUE = 'INCREMENT_COUNTER_VALUE'
-const RESET = 'RESET'
-const ADD_USER = 'ADD_USER'
-// initialize state
-const initialState = {
-    count: 1,
-    user:['azam']
+const initialCountValue = {
+    count: 0,
+    user:['safiul']
 }
-
-// create action
-const incrementCount = () => {
+const  INCREMENT = 'INCREMENT'
+const  DECREMENT = 'DECREMENT'
+const  RESET = 'RESET'
+const  ADD_USER = 'ADD_USER'
+const  INCREMENT_COUNTER_BY_VALUE = 'INCREMENT_COUNTER_BY_VALUE'
+const incrementCount = ()=>{
     return {
-        type: INCREMENT
+        type:INCREMENT
     }
 }
-const decrementCount = () => {
+const  decrementCount = ()=>{
     return {
-        type: DECREMENT
+        type:DECREMENT
     }
 }
-const resetCount = () => {
+const resetCount = ()=>{
     return {
-        type: RESET
+        type:RESET
     }
 }
-const incrementCountByValue = (value) => {
+const incrementCountByValue = (value)=>{
     return {
-        type: INCREMENT_COUNTER_VALUE,
+        type:INCREMENT_COUNTER_BY_VALUE,
         payload:value
     }
 }
-const incrementUser = (user) => {
+const addUser = (value)=>{
     return {
-        type: ADD_USER,
-        payload:user
-    }
-}
-// create Reducer
-const counterReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case INCREMENT:
-            return {
-                count: state.count + 1
-            }
-
-        case DECREMENT:
-            return {
-                count: state.count - 1
-            }
-        case INCREMENT_COUNTER_VALUE:
-            return {
-
-                count: state.count + action.payload
-            }
-        case ADD_USER:
-            return {
-                users:[...state.user , action.payload],
-                count: state.count + 1
-            }
-
-        case RESET:
-            return {
-                count: 0
-            }
-
-        default:
-            state
+        type:ADD_USER,
+        payload:value
     }
 }
 
-// CREATE STORE
+const counterReducer = (state= initialCountValue, action)=>{
+   switch (action.type) {
+    case INCREMENT:
+        return{
+            ...state,
+            count:state.count + 1
+        }
+    case DECREMENT:
+        return{
+            ...state,
+            count:state.count - 1
+        }
+    case INCREMENT:
+        return{
+            ...state,
+            count:0
+        }
+    case INCREMENT_COUNTER_BY_VALUE:
+        return{
+            ...state,
+            count:state.count + action.payload
+        }
+    case ADD_USER:
+        return{
+            user:[...state.user , action.payload],
+            count:state.count + 1
+        }
+   
+    default:
+        state
+   } 
+}
 const store = createStore(counterReducer)
-
-// subscribe store
 store.subscribe(()=>{
-    console.log(store.getState());
+    console.log(store.getState())
 })
-// store.dispatch(incrementCount())
-// store.dispatch(incrementCount())
-// store.dispatch(decrementCount())
-// store.dispatch(incrementCountByValue(10))
-// store.dispatch(resetCount())
-store.dispatch(incrementUser('safiul'))
+// store.dispatch(incrementCountByValue(9))
+store.dispatch(addUser('azam'))
