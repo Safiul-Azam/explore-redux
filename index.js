@@ -1,83 +1,49 @@
 const { createStore } = require("redux")
 
 /**
- * state - count:0
- * action - decrement or increment or reset
- * reducer - handle logic operation
- * store - getState(), subscribe(), dispatch()
+ * create a state
+ * create action
+ * create reducer
+ * create store and then subscribe(getState()) then dispatch
  */
-const initialCountValue = {
-    count: 0,
-    user:['safiul']
+const GET_PRODUCTS = 'GET_PRODUCTS'
+const ADD_PRODUCT = 'ADD_PRODUCT'
+const productsState = {
+    products:['apple', 'orange','banana'],
+    productCount:3
 }
-const  INCREMENT = 'INCREMENT'
-const  DECREMENT = 'DECREMENT'
-const  RESET = 'RESET'
-const  ADD_USER = 'ADD_USER'
-const  INCREMENT_COUNTER_BY_VALUE = 'INCREMENT_COUNTER_BY_VALUE'
-const incrementCount = ()=>{
+const getProducts = ()=>{
     return {
-        type:INCREMENT
+        type:GET_PRODUCTS,
     }
 }
-const  decrementCount = ()=>{
+const addProducts = (product)=>{
     return {
-        type:DECREMENT
-    }
-}
-const resetCount = ()=>{
-    return {
-        type:RESET
-    }
-}
-const incrementCountByValue = (value)=>{
-    return {
-        type:INCREMENT_COUNTER_BY_VALUE,
-        payload:value
-    }
-}
-const addUser = (value)=>{
-    return {
-        type:ADD_USER,
-        payload:value
+        type:ADD_PRODUCT,
+        payload:product
     }
 }
 
-const counterReducer = (state= initialCountValue, action)=>{
-   switch (action.type) {
-    case INCREMENT:
-        return{
-            ...state,
-            count:state.count + 1
-        }
-    case DECREMENT:
-        return{
-            ...state,
-            count:state.count - 1
-        }
-    case INCREMENT:
-        return{
-            ...state,
-            count:0
-        }
-    case INCREMENT_COUNTER_BY_VALUE:
-        return{
-            ...state,
-            count:state.count + action.payload
-        }
-    case ADD_USER:
-        return{
-            user:[...state.user , action.payload],
-            count:state.count + 1
-        }
-   
-    default:
-        state
-   } 
+const productsReducer = (state=productsState, action)=>{
+    switch (action.type) {
+        case GET_PRODUCTS:
+            return{
+                ...state
+            }
+        case ADD_PRODUCT:
+            return{
+                products:[...state.products, action.payload],
+                productCount:state.productCount + 1
+                
+            }
+    
+        default:
+            state;
+    }
 }
-const store = createStore(counterReducer)
+const store = createStore(productsReducer)
 store.subscribe(()=>{
     console.log(store.getState())
 })
-// store.dispatch(incrementCountByValue(9))
-store.dispatch(addUser('azam'))
+store.dispatch(getProducts())
+store.dispatch(addProducts('gray'))
